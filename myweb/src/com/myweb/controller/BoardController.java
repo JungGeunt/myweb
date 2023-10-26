@@ -80,6 +80,8 @@ public class BoardController extends HttpServlet {
 			service = new RegistServiceimpl();
 			service.execute(request, response);
 			
+			
+			
 		//목록으로 이동 
 			response.sendRedirect("list.board");  //다시 컨트롤러로 이동 
 	}else if (command.equals("/board/content.board")) {

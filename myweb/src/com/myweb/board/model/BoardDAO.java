@@ -44,16 +44,48 @@ public class BoardDAO {
 
 	//-----------DAO 동장 메서드 구현 CRUD----------------------
 	
-	public void regist(String writer, String title, String content) {
+	public int regist(String writer, String title, String content) {
 		
 		String sql = "insert into board(writer, title, content)" 
 									+ "values(?,?,?)";
+		
+		String sql2 ="select @@identity";
+		 int result =0;
 		try {
 			conn=ds.getConnection();
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, writer);
 			pstmt.setString(2, title);
 			pstmt.setString(3, content);
+			pstmt.executeUpdate();
+			
+			pstmt=conn.prepareStatement(sql2);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result=rs.getInt("@@identity");
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		return result;
+	}
+//파일 등록	
+public void registFile(String filename, String filerealname, int num) {
+		
+		String sql = "insert into file(filename, filerealname, filenum)" 
+									+ "values(?,?, ?)";
+		
+		try {
+			conn=ds.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, filename);
+			pstmt.setString(2, filerealname);
+			pstmt.setInt(3, num);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,6 +94,25 @@ public class BoardDAO {
 		}
 		
 	}
+
+public int findNumber() {
+	
+	String sql = "select @@identity as fnum";
+	int result =0;
+	
+	try {
+		conn=ds.getConnection();
+		pstmt=conn.prepareStatement(sql);
+		rs=pstmt.executeQuery();
+		result = rs.getInt("fnum");
+		
+	} catch (Exception e) {
+		
+	}
+	return result;
+}
+
+	
 	//게시물 목록  조회 메서드
 //	public List<BoardVO> getList(){
 //		List<BoardVO> list = new ArrayList<>();

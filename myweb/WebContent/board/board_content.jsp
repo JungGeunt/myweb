@@ -28,6 +28,11 @@
 					</td>
 				</tr>
 				<tr>
+					<td>첨부파일</td>
+					<td colspan="3">
+						<a >${vo.filename }</a>
+					</td>
+				</tr>
 				<tr>
 					<td>내용</td>
 					<td colspan="3" height="120">
